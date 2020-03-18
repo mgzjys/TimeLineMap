@@ -30,30 +30,32 @@
     <div id="map"></div>
 
     <script>
+    var colores = new Array("#ECC5B4", "#E3A78F", "#D9886C", "#D0694C", "#A55036");
+
       function getColorFor(cases) { // java String#hashCode
         if (cases < 10)
         {
-          return "rgb(20,60,200)";
+          return colores[0];
         }
         else if(cases < 101)
         {
-          return "rgb(30,60,200)";
+          return colores[1];
         }
         else if (cases < 201)
         {
-          return "rgb(40,60,200)";
+          return colores[2];
         }
         else if(cases < 301)
         {
-          return "rgb(50,60,200)";
+          return colores[3];
         }
         else if(cases < 401)
         {
-          return "rgb(60,60,200)";          //  block of code to be executed if the condition is true
+          return colores[4];          //  block of code to be executed if the condition is true
         }
         else
         {
-          return "rgb(70,60,200)";
+          return colores[4];
         }
       }
       var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
