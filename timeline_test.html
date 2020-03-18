@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <title>County</title>
+    <script src="js/leaflet-src.js"></script>
+    <script src="js/leaflet.timeline.js"></script>
+
+    <link href="css/leaflet.css" rel="stylesheet">
+
+    <style>
+      html, body{
+        margin: 0;
+        padding: 0;
+      }
+      #map{
+        width: 100vw;
+        height: 100vh;
+      }
+      .leaflet-bottom.leaflet-left{
+        width: 100%;
+      }
+      .leaflet-control-container .leaflet-timeline-controls{
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script>
+      function getColorFor(cases) { // java String#hashCode
+        if (cases < 5)
+        {
+          return "rgb(20,60,200)";
+        }
+        else if(cases < 20)
+        {
+          return "rgb(30,60,200)";
+        }
+        else if (cases < 100)
+        {
+          return "rgb(40,60,200)";
+        }
+        else if(cases < 200)
+        {
+          return "rgb(50,60,200)";
+        }
+        else if(cases < 300)
+        {
+          return "rgb(60,60,200)";          //  block of code to be executed if the condition is true
+        }
+        else
+        {
+          return "rgb(70,60,200)";
+        }
+      }
+      var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      var osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+      var osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+      var map = L.map('map', {layers: [osm], center: new L.LatLng(1.353,103.809), zoom: 10 });
+      var timeline;
+      var timelineControl;
+
+      function onLoadData(data){
+        timeline = L.timeline(data, {
+          style: function(data){
+            return {
+              stroke: false,
+              color: getColorFor(data.properties.cases),
+              fillOpacity: 0.5
+            }
+          },
+          waitToUpdateMap: true,
+          onEachFeature: function(feature, layer) {
+            layer.bindTooltip(feature.properties.name);
+          }
+        });
+
+        timelineControl = L.timelineSliderControl({
+          formatOutput: function(date) {
+            return new Date(date).toLocaleDateString();
+          },
+          enableKeyboardControls: true,
+        });
+        timeline.addTo(map);
+        timelineControl.addTo(map);
+        timelineControl.addTimelines(timeline);
+      }
+    </script>
+    <script src="./test.jsonp"></script>
+  </body>
+</html>
